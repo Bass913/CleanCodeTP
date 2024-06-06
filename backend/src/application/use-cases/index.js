@@ -1,19 +1,10 @@
 require('dotenv').config();
+const connection = require("../../infrastructure/database/connection");
 const cors = require('cors');
 const express = require('express');
-const mongoose = require('mongoose');
 const port = process.env.PORT;
 
 const app = express();
-
-const connection = async () => {
-    try {
-        await mongoose.connect(process.env.DB_NOSQL_HOST);
-        console.log('database connected');
-    } catch (err) {
-        console.log(err);
-    }
-};
 
 app.listen(port || 3000, () => {
     console.log(`Clean Code app listening on port ${port}`);
