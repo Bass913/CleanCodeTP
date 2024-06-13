@@ -7,18 +7,28 @@ import {
 } from "react-router-dom";
 import './index.css'
 import App from './App';
+import CreateCardPage from './pages/CreateCardPage';
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <App />,
+    path: "",
+    element: <Layout />,
+    children: [
+      {
+        path: "",
+        element: <App />,
+      },
+      {
+        path: "create/card",
+        element: <CreateCardPage />,
+      },
+    ]
   },
+
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Layout>
-      <RouterProvider router={router} />
-    </Layout>
+    <RouterProvider router={router} />
   </React.StrictMode>,
 )
