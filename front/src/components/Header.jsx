@@ -4,7 +4,7 @@ export default function Header() {
     return (
         <div className="navbar bg-base-100">
             <div className="navbar-start">
-                <a className="btn btn-ghost text-xl">flashCard</a>
+                <Link to="/" className="btn btn-ghost text-xl">flashCard</Link>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
@@ -15,6 +15,6 @@ export default function Header() {
             <div className="navbar-end">
                 <a className="btn">Connexion</a>
             </div>
-        </div>
+        </div >
     );
 }
