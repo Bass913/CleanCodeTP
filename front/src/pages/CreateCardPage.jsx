@@ -2,27 +2,22 @@ import axios from 'axios';
 
 export default function CreateCardPage() {
 
-    function handleSubmit(e) {
-        // Prevent the browser from reloading the page
+    async function handleSubmit(e) {
         e.preventDefault();
 
-        // Read the form data
         const form = e.target;
+        try {
+            await axios.post('http://localhost:8080/cards', {
+                question: form.question.value,
+                answer: form.answer.value,
+                tag: form.tag.value
+            })
 
-        console.log(form)
-
-        //You can pass formData as a fetch body directly:
-        axios.post('http://localhost:8080/cards', {
-            question: form.question.value,
-            answer: form.answer.value,
-            tag: form.tag.value
-        }).then(function (response) {
-            console.log(response);
-        })
-            .catch(function (error) {
-                console.log(error);
-            });
+        } catch (error) {
+            console.error(error);
+        }
     }
+
     return (
         <div className="flex items-center justify-center h-3/4 relative">
             <form method="post" onSubmit={handleSubmit} id='my-form'>

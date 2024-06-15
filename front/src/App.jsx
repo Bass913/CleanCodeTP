@@ -8,7 +8,7 @@ export default function App() {
 
   async function getCards() {
     try {
-      const response = await axios.get('http://localhost:8080/cards');
+      const response = await axios.get('http://localhost:8080/cards/quizz?date="2024-06-30"');
       setCards(response.data);
     } catch (error) {
       console.error(error);
@@ -27,6 +27,8 @@ export default function App() {
           category={card.category}
           question={card.question}
           tag={card.tag}
+          actualAnswer={card.answer}
+          cardId={card._id}
         />
       ))}
     </div>

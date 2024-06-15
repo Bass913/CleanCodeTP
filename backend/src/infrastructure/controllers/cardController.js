@@ -54,22 +54,23 @@ module.exports = {
         }
     },
     answerCard: async function (req, res, next) {
-        try{
+        try {
             const cardId = req.params.cardId;
-            const isValid = req.body;
+            const { isValid } = req.body;
+            if (typeof isValid !== "boolean") {
+                return res.status(400).json({ message: "Bad request. Make sur that isValid is a boolean." });
+            }
             const card = await cardService.answerCard(cardId, isValid);
-            if(!card){
-                return res.status(404).json({message: 'Card not found'});
+            if (!card) {
+                return res.status(404).json({ message: 'Card not found' });
             }
-            res.status(204).send();
+            res.setStatus(204)
 
-        }catch(err){
-            console.log(err);
-            if(err.message === 'Card not found'){
-                return res.status(404).json({message: err.message});
-            }else{
-                res.status(400).json({message: err.message});
+        } catch (err) {
+            if (!err.statusCode) {
+                err.statusCode = 500;
             }
+            next(err);
         }
     }
 };
