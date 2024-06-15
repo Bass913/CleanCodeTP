@@ -1,14 +1,17 @@
 const CardModel = require('../../domain/models/card');
 
 module.exports = {
-    createCard: async function (cardDate) {
+    createCard: async function (cardData) {
         CardModel.create(cardData);
     },
     getAllCards: async function () {
         return CardModel.find();
     },
     getQuizzCards: async function (date) {
+        
         const today = new Date(date || Date.now());
+        today.setHours(0, 0, 0, 0);  
+
         const categories = [
             { name: 'FIRST', days: 1 },
             { name: 'SECOND', days: 2 },
@@ -20,13 +23,28 @@ module.exports = {
         ];
 
         const conditions = categories.map(category => {
-            const targetDate = new Date(today.getTime() - (category.days * 24 * 60 * 60 * 1000));
+            const targetDate = new Date(today);
+            targetDate.setDate(today.getDate() - category.days);
             return {
-                lastReviewed: { $lte: targetDate },
-                category: category.name
+                category: category.name,
+                $or: [
+                    { lastReviewed: null },
+                    {
+                        $expr: {
+                            $and: [
+                                { $lte: [{ $year: "$lastReviewed" }, targetDate.getFullYear()] },
+                                { $lte: [{ $month: "$lastReviewed" }, targetDate.getMonth() + 1] },
+                                { $lte: [{ $dayOfMonth: "$lastReviewed" }, targetDate.getDate()] }
+                            ]
+                        }
+                    }
+                ]
             };
         });
+
         return CardModel.find({ $or: conditions });
+
+       
     },
     findCardById: async function (cardId) {
         return CardModel.findById(cardId);

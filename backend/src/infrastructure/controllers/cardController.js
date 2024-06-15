@@ -64,7 +64,7 @@ module.exports = {
             if (!card) {
                 return res.status(404).json({ message: 'Card not found' });
             }
-            res.setStatus(204)
+            res.sendStatus(204)
 
         } catch (err) {
             if (!err.statusCode) {

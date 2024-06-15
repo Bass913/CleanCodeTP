@@ -22,7 +22,7 @@ const cardSchema = new Schema({
     },
     lastReviewed: {
         type: Date,
-        default: Date.now,
+        default: null,
     },
 },
     { timestamps: true },
