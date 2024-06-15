@@ -41,5 +41,35 @@ module.exports = {
             }
             next(err);
         }
+    },
+    getQuizzCards: async function (req, res, next) {
+        try {
+            const cards = await cardService.getQuizzCards(req.query.date);
+            res.status(200).json(cards);
+        } catch (err) {
+            if (!err.statusCode) {
+                err.statusCode = 500;
+            }
+            next(err);
+        }
+    },
+    answerCard: async function (req, res, next) {
+        try{
+            const cardId = req.params.cardId;
+            const isValid = req.body;
+            const card = await cardService.answerCard(cardId, isValid);
+            if(!card){
+                return res.status(404).json({message: 'Card not found'});
+            }
+            res.status(204).send();
+
+        }catch(err){
+            console.log(err);
+            if(err.message === 'Card not found'){
+                return res.status(404).json({message: err.message});
+            }else{
+                res.status(400).json({message: err.message});
+            }
+        }
     }
 };

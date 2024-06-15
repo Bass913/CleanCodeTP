@@ -19,7 +19,11 @@ const cardSchema = new Schema({
         required: true,
         default: 'FIRST', // Default value for category
 
-    }
+    },
+    lastReviewed: {
+        type: Date,
+        default: Date.now,
+    },
 },
     { timestamps: true },
 );
