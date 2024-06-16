@@ -8,7 +8,8 @@ module.exports = {
         return CardModel.find();
     },
     getCardsByTag: async function (tags) {
-        return CardModel.find({ tag: { $in: tags } });
+        const tagConditions = tags.map(tag => new RegExp(`^${tag}$`, 'i'));
+        return CardModel.find({ tag: { $in: tagConditions } });
     },
     getQuizzCards: async function (date) {
         
