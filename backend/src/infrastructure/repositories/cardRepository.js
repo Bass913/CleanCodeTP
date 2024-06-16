@@ -24,22 +24,15 @@ module.exports = {
 
         const conditions = categories.map(category => {
             const targetDate = new Date(today);
-            targetDate.setDate(today.getDate() - category.days);
-            return {
-                category: category.name,
-                $or: [
-                    { lastReviewed: null },
-                    {
-                        $expr: {
-                            $and: [
-                                { $lte: [{ $year: "$lastReviewed" }, targetDate.getFullYear()] },
-                                { $lte: [{ $month: "$lastReviewed" }, targetDate.getMonth() + 1] },
-                                { $lte: [{ $dayOfMonth: "$lastReviewed" }, targetDate.getDate()] }
-                            ]
-                        }
-                    }
-                ]
-            };
+            targetDate.setDate(today.getDate() - category.days + 1); // Adjust the target date calculation
+        targetDate.setHours(0, 0, 0, 0); // Set the time part to 00:00:00 to only compare dates
+        return {
+            category: category.name,
+            $or: [
+                { lastReviewed: null },
+                { lastReviewed: { $lte: targetDate } }
+            ]
+        };
         });
 
         return CardModel.find({ $or: conditions });
