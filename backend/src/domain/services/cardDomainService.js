@@ -7,6 +7,9 @@ module.exports = {
     getAllCards: async function () {
         return cardRepository.getAllCards();
     },
+    getCardsByTag: async function (tags) {
+        return cardRepository.getCardsByTag(tags);
+    },
     getQuizzCards: async function (date) {
         return cardRepository.getQuizzCards(date);
     },

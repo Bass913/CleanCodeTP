@@ -5,7 +5,10 @@ module.exports = {
     createCard: async function (cardData) {
         cardDomainService.createCard(cardData);
     },
-    getCards: async function () {
+    getCards: async function (tags) {
+        if (tags) {
+            return cardDomainService.getCardsByTag(tags);
+        }
         return cardDomainService.getAllCards();
     },
     getQuizzCards: async function (date) {

@@ -7,6 +7,9 @@ module.exports = {
     getAllCards: async function () {
         return CardModel.find();
     },
+    getCardsByTag: async function (tags) {
+        return CardModel.find({ tag: { $in: tags } });
+    },
     getQuizzCards: async function (date) {
         
         const today = new Date(date || Date.now());

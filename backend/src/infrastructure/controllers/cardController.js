@@ -33,7 +33,8 @@ module.exports = {
     },
     getCards: async function (req, res, next) {
         try {
-            const cards = await cardService.getCards();
+            const tags = req.query.tags ? req.query.tags.split(',') : null;
+            const cards = await cardService.getCards(tags);
             res.status(200).json(cards);
         } catch (err) {
             if (!err.statusCode) {
