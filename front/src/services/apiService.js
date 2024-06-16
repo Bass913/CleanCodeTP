@@ -15,7 +15,11 @@ apiClient.interceptors.response.use(
 
 const apiService = {
 
-    getCards(date) {
+    getCards(tags) {
+        return apiClient.get(`/cards?tags=${tags}`);
+    },
+
+    getQuizzCards(date) {
         return apiClient.get(`/cards/quizz?date=${date}`);
     },
 

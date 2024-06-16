@@ -9,6 +9,16 @@ export default function Card({ category, question, tag, actualAnswer, cardId }) 
     const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
     const [confirmSubmit, setConfirmSubmit] = useState(false);
 
+    const categoryColors = {
+        "FIRST": "bg-green-500",
+        "SECOND": "bg-yellow-500",
+        "THIRD": "bg-red-500",
+        "FOURTH": "bg-blue-500",
+        "FIFTH": "bg-purple-500",
+        "SIXTH": "bg-orange-500",
+        "SEVENTH": "bg-pink-500",
+    };
+
     const handleFlip = () => {
         setIsFlipped(!isFlipped);
     };
@@ -70,13 +80,18 @@ export default function Card({ category, question, tag, actualAnswer, cardId }) 
         setConfirmSubmit(false);
     };
 
+    const handleBack = () => {
+        setIsFlipped(false);
+        setAnswer('');
+    };
+
     return (
         <div className="perspective-1000">
             <div className={`relative w-96 h-64 transition-transform duration-700 transform ${isFlipped ? 'rotate-y-180' : ''}`}>
                 {/* Front Side */}
                 <div className={`absolute w-full backface-hidden bg-base-100 shadow-xl p-4 ${isFlipped ? 'hidden' : 'block'}`}>
                     <h2 className="card-title">
-                        <div className="badge badge-secondary">{category}</div>
+                        <div className={`badge ${categoryColors[category]} text-black`}>{category}</div>
                     </h2>
                     <div className="text-center mt-4">
                         <p>{question}</p>
@@ -88,6 +103,12 @@ export default function Card({ category, question, tag, actualAnswer, cardId }) 
                 </div>
                 {/* Back Side */}
                 <div className={`absolute w-full backface-hidden bg-base-100 shadow-xl p-4 ${isFlipped ? 'block' : 'hidden'} transform rotate-y-180`}>
+                    <button className="btn btn-secondary mb-4" onClick={handleBack}>
+                        Retour
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
                     <input
                         type="text"
                         className="input input-bordered w-full mb-4"

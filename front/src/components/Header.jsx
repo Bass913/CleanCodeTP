@@ -8,7 +8,8 @@ export default function Header() {
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
-                    <li><Link to="/">Mes fiches</Link></li>
+                    <li><Link to="/">Questionnaire du jour</Link></li>
+                    <li><Link to="/cards">Mes fiches</Link></li>
                     <li><Link to="/create/card">Créer une fiche</Link></li>
                 </ul>
             </div>

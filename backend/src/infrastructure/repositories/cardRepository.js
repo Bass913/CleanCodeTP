@@ -11,9 +11,9 @@ module.exports = {
         return CardModel.find({ tag: { $in: tags } });
     },
     getQuizzCards: async function (date) {
-        
+
         const today = new Date(date || Date.now());
-        today.setHours(0, 0, 0, 0);  
+        today.setHours(0, 0, 0, 0);
 
         const categories = [
             { name: 'FIRST', days: 1 },
@@ -28,19 +28,19 @@ module.exports = {
         const conditions = categories.map(category => {
             const targetDate = new Date(today);
             targetDate.setDate(today.getDate() - category.days + 1); // Adjust the target date calculation
-        targetDate.setHours(0, 0, 0, 0); // Set the time part to 00:00:00 to only compare dates
-        return {
-            category: category.name,
-            $or: [
-                { lastReviewed: null },
-                { lastReviewed: { $lte: targetDate } }
-            ]
-        };
+            targetDate.setHours(0, 0, 0, 0); // Set the time part to 00:00:00 to only compare dates
+            return {
+                category: category.name,
+                $or: [
+                    { lastReviewed: null },
+                    { lastReviewed: { $lte: targetDate } }
+                ]
+            };
         });
 
         return CardModel.find({ $or: conditions });
 
-       
+
     },
     findCardById: async function (cardId) {
         return CardModel.findById(cardId);

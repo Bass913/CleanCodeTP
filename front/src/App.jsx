@@ -10,9 +10,9 @@ export default function App() {
 
   const [cards, setCards] = useState([]);
 
-  async function getCards(date) {
+  async function getQuizzCards(date) {
     try {
-      const response = await apiService.getCards(date);
+      const response = await apiService.getQuizzCards(date);
       setCards(response.data);
     } catch (error) {
       console.error(error);
@@ -24,7 +24,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    getCards(value.startDate);
+    getQuizzCards(value.startDate);
   }, [value]);
 
   return (

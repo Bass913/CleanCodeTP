@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Layout from "./components/layouts/Layout"
 import {
@@ -8,6 +7,7 @@ import {
 import './index.css'
 import App from './App';
 import CreateCardPage from './pages/CreateCardPage';
+import MyCardsPage from './pages/MyCardsPage';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +17,10 @@ const router = createBrowserRouter([
       {
         path: "",
         element: <App />,
+      },
+      {
+        path: "cards",
+        element: <MyCardsPage />,
       },
       {
         path: "create/card",
