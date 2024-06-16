@@ -44,7 +44,7 @@ export default function MyCardsPage() {
             <div className='mx-20 flex gap-10 items-center h-2/4'>
                 {cards.map(card => (
                     <Card
-                        key={card._id} // Assuming card has an id
+                        key={card._id}
                         category={card.category}
                         question={card.question}
                         tag={card.tag}

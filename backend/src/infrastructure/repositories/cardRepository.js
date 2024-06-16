@@ -28,8 +28,8 @@ module.exports = {
 
         const conditions = categories.map(category => {
             const targetDate = new Date(today);
-            targetDate.setDate(today.getDate() - category.days + 1); // Adjust the target date calculation
-            targetDate.setHours(0, 0, 0, 0); // Set the time part to 00:00:00 to only compare dates
+            targetDate.setDate(today.getDate() - category.days + 1);
+            targetDate.setHours(0, 0, 0, 0);
             return {
                 category: category.name,
                 $or: [
