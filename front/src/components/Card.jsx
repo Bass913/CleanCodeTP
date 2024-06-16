@@ -1,12 +1,13 @@
-import { useState } from 'react';
-import axios from 'axios';
-
+import { useState, useEffect } from 'react';
+import apiService from '../services/apiService'; // Assurez-vous que le chemin est correct
 
 export default function Card({ category, question, tag, actualAnswer, cardId }) {
     const [isFlipped, setIsFlipped] = useState(false);
     const [answer, setAnswer] = useState('');
     const [isValid, setIsValid] = useState(false);
-
+    const [shouldSubmit, setShouldSubmit] = useState(false);
+    const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
+    const [confirmSubmit, setConfirmSubmit] = useState(false);
 
     const handleFlip = () => {
         setIsFlipped(!isFlipped);
@@ -16,36 +17,58 @@ export default function Card({ category, question, tag, actualAnswer, cardId }) 
         setAnswer(e.target.value);
     };
 
-    async function answerCard() {
+    useEffect(() => {
+        if (shouldSubmit) {
+            answerCard();
+            setShouldSubmit(false);
+        }
+    }, [shouldSubmit]);
+
+    const answerCard = async () => {
         try {
-            await axios.patch(`http://localhost:8080/cards/${cardId}/answer`, {
-                isValid: isValid
-            });
+            await apiService.answerCard(cardId, isValid);
+            if (isValid) {
+                alert("Bonne réponse!");
+            } else {
+                alert("Mauvaise réponse..");
+            }
+            resetCard();
         } catch (error) {
             console.error(error);
         }
-    }
-
+    };
 
     const handleSubmit = () => {
-        if (answer === actualAnswer) {
-            setIsValid(true);
-            answerCard();
-            alert("Bonne réponse!");
-            setTimeout(() => {
-                setAnswer('');
-                setIsFlipped(false);
-            }, 3000);
+        const isAnswerValid = answer.toLowerCase() === actualAnswer.toLowerCase();
+        setIsValid(isAnswerValid);
+
+        if (isAnswerValid) {
+            setShouldSubmit(true);
         } else {
-            alert("Mauvaise réponse..");
-            setTimeout(() => {
-                setAnswer('');
-                setIsFlipped(false);
-            }, 3000);
+            setShowCorrectAnswer(true);
         }
     };
 
+    const handleConfirmSubmit = () => {
+        setIsValid(true);
+        setShowCorrectAnswer(false);
+        setConfirmSubmit(true);
+        setShouldSubmit(true);
+    };
 
+    const handleAcceptWrongAnswer = () => {
+        setIsValid(false);
+        setShowCorrectAnswer(false);
+        setConfirmSubmit(true);
+        setShouldSubmit(true);
+    };
+
+    const resetCard = () => {
+        setAnswer('');
+        setIsFlipped(false);
+        setShowCorrectAnswer(false);
+        setConfirmSubmit(false);
+    };
 
     return (
         <div className="perspective-1000">
@@ -61,7 +84,7 @@ export default function Card({ category, question, tag, actualAnswer, cardId }) 
                     <div className="card-actions justify-end mt-4">
                         <div className="badge badge-outline">{tag}</div>
                     </div>
-                    <button className="btn btn-primary w-36 mt-4" onClick={handleFlip} >Répondre</button>
+                    <button className="btn btn-primary w-36 mt-4" onClick={handleFlip}>Répondre</button>
                 </div>
                 {/* Back Side */}
                 <div className={`absolute w-full backface-hidden bg-base-100 shadow-xl p-4 ${isFlipped ? 'block' : 'hidden'} transform rotate-y-180`}>
@@ -71,8 +94,18 @@ export default function Card({ category, question, tag, actualAnswer, cardId }) 
                         value={answer}
                         onChange={handleInputChange}
                         placeholder="Votre réponse"
+                        disabled={showCorrectAnswer || confirmSubmit}
                     />
-                    <button className="btn btn-primary w-full" onClick={handleSubmit}>Valider</button>
+                    {!showCorrectAnswer && !confirmSubmit && (
+                        <button className="btn btn-primary w-full" onClick={handleSubmit}>Valider</button>
+                    )}
+                    {showCorrectAnswer && (
+                        <div>
+                            <p className="text-red-500 mb-4">Mauvaise réponse. La bonne réponse est : {actualAnswer}</p>
+                            <button className="btn btn-primary w-full mb-2" onClick={handleConfirmSubmit}>Forcer la validation</button>
+                            <button className="btn btn-secondary w-full" onClick={handleAcceptWrongAnswer}>Envoyer mauvaise réponse</button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
