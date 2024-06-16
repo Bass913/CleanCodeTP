@@ -1,16 +1,13 @@
 # Etapes avant de démarrer le projet
 
-# Ajoutez les variables d'environnements nécessaires au projet
-# Créer un fichier .env dans le dossier backend
+# Définissez les variables d'environnements
 
-cd backend
+Nous utilisons deux variables d'environnements dans le backend :
 
-touch .env
+- PORT
+- DB_NOSQL_HOST
 
-# Ajoutez les variables suivantes :
-
-PORT=8080
-DB_NOSQL_HOST=mongodb+srv://wtresgi:e2b9aML@cluster0.tltlzuu.mongodb.net/cleancode?retryWrites=true&w=majority
+A vous de les renseigner dans votre fichier d'environnement avec les valeurs de votre choix
 
 # Rendez-vous dans le dossier front et installez les dépendences du projet
 
@@ -23,6 +20,10 @@ npm install
 cd backend
 
 npm install
+
+# Lancez les test unitaires
+
+npm run test
 
 # Lancez le serveur
 
